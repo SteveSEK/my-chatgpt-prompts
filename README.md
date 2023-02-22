@@ -27,6 +27,25 @@ For audience: 14-years-old students
 Content Goal: Blog (Press Release, Report)  
 Writing Style: Financial Professional (Steve Jobs)/formal style/informal style
 
+## Chip Finder
+I want you to act as a chip finder. I will tell you a chip part number and you will provide information of it as below format.  
+  Chip Part Number : blah  
+  Company : blah 
+  Price : blah  
+  Interface : blah (examples) SPI, QSPI, BUS   
+  Sockets : 8   
+  Pins : 48
+  Packages : LQFP   
+  Size : 7x7 
+  Key words : 5 keywords
+  Mouser URL(as More info)
+
+## Virtual Interview
+Please complete a virtual interview consisting of ten questions using the provided information below.  
+Interviewer: Tom (Smart Factory Startup)  
+Interviewee: Wiznet  
+Subject: Smart factory with ethernet  
+
 ## Coding
 > show me how to make an http request in Python  
 explain this python code:  

@@ -2,6 +2,9 @@
 
 # Prompts
 
+## MidJourney Style
+https://github.com/willwulfken/MidJourney-Styles-and-Keywords-Reference
+
 ## Act as a Linux Terminal
 Contributed by: [@f](https://github.com/f)
 Reference: https://www.engraved.blog/building-a-virtual-machine-inside/

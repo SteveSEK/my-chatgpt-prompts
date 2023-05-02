@@ -17,6 +17,17 @@ Contributed by: [@f](https://github.com/f)
 
 > I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations. My first sentence is "istanbulu cok seviyom burada olmak cok guzel"
 
+## Good
+
+> Please answer the W5500 following the conditions below  
+Topic: blah
+Length: around 2000 words  
+Format: markdown  
+Answer me in English and Korean
+Includes title  
+Includes subtitles and detail descriptions  
+Content Goal: Blog (Press Release, Report)  
+
 ## Various output formats
 
 > Please answer the W5500 following the conditions below  

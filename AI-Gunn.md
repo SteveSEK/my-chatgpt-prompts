@@ -66,10 +66,10 @@ tips=pd.get_dummies(tips,columns=['day'],drop_first=True)​
 ```
 #### 9. Data Split
 ```
-from sklearn.model_selection import train_test_split X = tips.drop('total_bill',axis=1) ​
+from sklearn.model_selection import train_test_split
+X = tips.drop('total_bill',axis=1) ​
 y = tips['total_bill’]   # series ​
-X_train,X_valid,y_train, y_valid = ​
-train_test_split(X,y, random_state=58,test_size=0.2)​
+X_train,X_valid,y_train, y_valid = ​train_test_split(X,y, random_state=58,test_size=0.2)​
 ```
 #### 10. Standardization/Normalization
 ```

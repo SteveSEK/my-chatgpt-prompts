@@ -76,7 +76,7 @@ X_train,X_valid,y_train, y_valid = ​train_test_split(X,y, random_state=58,test
 from sklearn.preprocessing import StandardScaler ​
 scaler = StandardScaler() ​
 X_train_scaled = scaler.fit_transform(X_train) ​
-X_test_scaled = scaler.fit_transform(X_valid)​
+X_valid_scaled = scaler.transform(X_valid)​
 
 from sklearn.preprocessing import MinMaxScaler​
 minmax_scaler = MinMaxScaler()​

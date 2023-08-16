@@ -184,20 +184,29 @@ for i in labels: ​
 ```
 ## 원-핫 인코딩 ##
 
-# 문자를 숫자로 변경 (원-핫 인코딩)
+# (1) 문자를 숫자로 변경 (원-핫 인코딩)
 # drop_first=True  첫번째 카테고리(인코딩 데이터) 삭제
 cols = df.select_dtypes('object').columns.tolist()
 df = pd.get_dummies(columns=cols, data=df, drop_first=True)
+
+# (2) 
+df=pd.get_dummies(df,columns=['col'],drop_first=True)​
+tips=pd.get_dummies(tips,columns=['day'],drop_first=True)​
 ```
 
 #### 5. 데이터 분리 (x, y)
 ```
-#Feature(X), Target(Y) 분리
+# (1)
+from sklearn.model_selection import train_test_split
+X = tips.drop('total_bill',axis=1) ​
+y = tips['total_bill’]   # series ​
+X_train,X_valid,y_train, y_valid = ​train_test_split(X,y, random_state=58,test_size=0.2)​
+
+# (2) Feature(X), Target(Y) 분리. 학습데이터(train set)와 검증데이터(test set)로 분리
 target = 'CHURN'
 x = df.drop(target, axis=1)
 y = df[target]
 
-#학습데이터(train set)와 검증데이터(test set)로 분리
 from sklearn.model_selection import train_test_split
 #test_size는 원래 데이터(Y)의 분포 비율
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=2023)
@@ -223,25 +232,25 @@ x_test = scaler.transform(x_test)
 
 # linear회귀
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from sklearn.metrics import classification_report
-
 model = LinearRegression()
 model.fit(x_train, y_train)
 y_pred = model.predict(x_test)
-print(classification_report(y_test, y_pred))
+
+from sklearn.metrics import mean_squared_error​
+mse = mean_squared_error(y_valid, y_pred)​
+from sklearn.metrics import mean_absolute_error​
+mae = mean_absolute_error(y_valid, y_pred) ​
 
 #로지스틱 회귀
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from sklearn.metrics import classification_report
-
 model = LogisticRegression()
 model.fit(x_train, y_train)
 y_pred = model.predict(x_test)
-print(classification_report(y_test, y_pred))
+
+from sklearn.metrics import mean_squared_error​
+mse = mean_squared_error(y_valid, y_pred)​
+from sklearn.metrics import mean_absolute_error​
+mae = mean_absolute_error(y_valid, y_pred) ​
 ```
 
 ```

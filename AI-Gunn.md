@@ -58,7 +58,6 @@ for i in labels: ​
     le = LabelEncoder() ​
     le = le.fit(price[i]) ​
     price[i] = le.transform(price[i])​
-Price[i] = le.fit_transform(price[i])​
 ```
 #### 8. One-Hot Encoder
 ```

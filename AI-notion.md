@@ -169,6 +169,17 @@ from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 df['REPORTED_USAGE_LEVEL'] = le.fit_transform(df['REPORTED_USAGE_LEVEL'])
 df['REPORTED_USAGE_LEVEL'] = df['REPORTED_USAGE_LEVEL'].astype('float')
+
+#문자를 숫자로 변경(라벨 인코딩)
+from sklearn.preprocessing import LabelEncoder 
+tips['sex'] = le.fit_transform(tips['sex'])​
+
+labels = ['col1', 'col2', 'col3'] ​
+for i in labels: ​
+    le = LabelEncoder() ​
+    le = le.fit(price[i]) ​
+    price[i] = le.transform(price[i])​
+Price[i] = le.fit_transform(price[i])​
 ```
 
 ```

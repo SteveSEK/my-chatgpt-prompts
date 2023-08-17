@@ -1,7 +1,7 @@
 # 다중분류
 
 ```
-import pandasd as pd
+import pandasx as pd
 
 drugs = pd.read_csv('drug200.csv')
 

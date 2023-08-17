@@ -1,0 +1,119 @@
+# 다중분류
+
+```
+import pandasd as pd
+
+drugs = pd.read_csv('drug200.csv')
+
+# lineplot 그래프 생성
+sns.lineplot(x='Age', y='Na_to_K', data=drugs)
+# 그래프에 라벨 추가
+plt.xlabel('Age')
+plt.ylabel('Na_to_K')
+# 그래프 출력
+plt.show()
+
+
+sns.boxplot(y='Na_to_K', data=drugs)
+# 그래프 출력
+plt.show()
+
+
+new_drugs=drugs.drop(drugs[drugs['Age']>55].index, axis=0)
+new_drugs=new_drugs.drop(new_drugs[new_drugs['Na_to_K']>30].index,axis=0)
+
+new_drugs = drugs.drop(drugs[(drugs['Age'] > 55) | (drugs['Na_to_K'] > 30)].index)
+
+
+#new_drugs.isnull().sum()
+new_drugs = new_drugs.fillna(0)
+#new_drugs.isnull().sum()
+#new_drugs.info()
+
+
+from sklearn.preprocessing import LabelEncoder
+encoder = LabelEncoder()
+new_drugs['BP'] = encoder.fit_transform(new_drugs['BP'])
+new_drugs['Cholesterol'] = encoder.fit_transform(new_drugs['Cholesterol'])
+new_drugs['Drug'] = encoder.fit_transform(new_drugs['Drug'])
+label_drugs = new_drugs
+
+from sklearn.preprocessing import LabelEncoder 
+label_drugs = new_drugs.copy()
+le = LabelEncoder() 
+labels = ['BP', 'Cholesterol', 'Drug'] 
+for i in labels:     
+    le = le.fit(new_drugs[i]) 
+    label_drugs[i] = le.transform(new_drugs[i])
+
+
+plt.figure(figsize=(8, 8))
+sns.heatmap(label_drugs.corr(), cmap="Oranges", annot=True)
+plt.show()
+
+cols = label_drugs.select_dtypes('object').columns.tolist()
+drugs_preset = pd.get_dummies(columns=cols, data=label_drugs, drop_first=True)
+
+print(drugs_preset)
+
+
+from sklearn.model_selection import train_test_split
+X = drugs_preset.drop('Drug',axis=1) 
+y = drugs_preset['Drug']
+X_train,X_valid,y_train, y_valid = train_test_split(X, y, random_state=42,test_size=0.2)
+
+
+from sklearn.ensemble import RandomForestClassifier
+rf_model = RandomForestClassifier(n_estimators=30, max_depth=9, min_samples_split=3, min_samples_leaf=2, random_state=42)
+rf_model.fit(X_train, y_train)
+
+from sklearn.tree import DecisionTreeClassifier
+dt_model = DecisionTreeClassifier(max_depth=5, min_samples_split=2, min_samples_leaf=1, random_state=41)
+dt_model.fit(X_train, y_train)
+
+
+from sklearn.metrics import accuracy_score, f1_score
+y_pred = rf_model.predict(X_valid)
+rfr_acc = accuracy_score(y_valid, y_pred)
+rfr_f1 = f1_score(y_valid, y_pred, average='weighted')
+print('accuracy:',rfr_acc)
+print('f1-score:',rfr_f1)
+
+
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+num_classes=5
+# 모델 설정
+model = Sequential()
+model.add(Dense(256, input_dim=5, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(num_classes, activation='softmax'))  # num_classes는 분류하고자 하는 클래스의 수를 나타냅니다.
+# 모델 컴파일
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+# 콜백 설정
+estopping = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100)
+mcheckpoint = ModelCheckpoint('AI_best_model.h5', monitor='val_loss', mode='min', save_best_only=True, verbose=1)
+# 모델 학습
+history = model.fit(X_train, y_train, validation_data=(X_valid, y_valid), epochs=1000, batch_size=64, callbacks=[estopping, mcheckpoint])
+
+
+import matplotlib.pyplot as plt
+
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('model acc')# 제목
+plt.ylabel('Score') # score y축표시
+plt.xlabel('Epochs') # score x축표시
+plt.legend(['Train Accuracy', 'Validation Accuracy'], loc='lower right') # 범례 표시
+plt.show()
+```

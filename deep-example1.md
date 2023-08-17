@@ -1,4 +1,4 @@
-# 다중분류
+### 다중분류
 
 ```
 import pandasz as pd
@@ -117,3 +117,116 @@ plt.xlabel('Epochs') # score x축표시
 plt.legend(['Train Accuracy', 'Validation Accuracy'], loc='lower right') # 범례 표시
 plt.show()
 ```
+### Regression Random Forest
+```
+
+players = pd.read_csv("top5_leagues_player.csv")
+
+sns.pairplot(data=players, y_vars="price", x_vars = ['age', 'shirt_nr', 'foot', 'league'])
+
+new_players = players.drop(players[players['age']>35].index)
+new_players = new_players.drop(new_players[new_players['shirt_nr']>50].index)
+new_players
+#new_players.info()
+
+outlier = players[(players['age']>35) | (players['shirt_nr']>50)].index
+new_players = players.drop(outlier)
+new_players
+#new_players.info()
+
+plt.figure(figsize=(10, 10))
+sns.heatmap(new_players.corr(), annot=True, cmap='coolwarm')
+plt.show()
+
+new_players.info()
+clean_players = new_players.drop(['Unnamed: 0', 'name', 'full_name'], axis=1)
+clean_players.info()
+
+
+#clean_players.isnull().sum()
+clean_players = clean_players.dropna()
+#clean_players.isnull().sum()
+
+clean_players.isnull().sum()
+clean_players = clean_players.dropna()
+#clean_players.info()
+clean_players.isnull().sum()
+
+clean_players.dropna(inplace=True)
+
+
+from sklearn.preprocessing import LabelEncoder
+label_players = clean_players.copy()
+cols= ['nationality', 'place_of_birth', 'position', 'outfitter', 'club', 'player_agent', 'foot', 'joined_club']
+le = LabelEncoder()
+for col in cols:
+    label_players[col] = le.fit_transform(label_players[col])
+label_players.head()
+
+
+from sklearn.preprocessing import LabelEncoder
+label_players = clean_players.copy()
+le = LabelEncoder()
+label_players['nationality'] = le.fit_transform(label_players['nationality'])
+label_players['position'] = le.fit_transform(label_players['position'])
+label_players['outfitter'] = le.fit_transform(label_players['outfitter'])
+label_players.head()
+
+players_preset = pd.get_dummies(columns=['contract_expires', 'league'], data=label_players, drop_first=True)
+players_preset.info()
+
+from sklearn.model_selection import train_test_split
+y = players_preset['price']
+X = players_preset.drop("price", axis=1)
+X_train, X_valid, y_train,y_valid = train_test_split(X, y, test_size=0.2, random_state=42)
+
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train_scaled= scaler.transform(X_train)
+X_valid_scaled = scaler.transform(X_valid)
+
+from sklearn.ensemble import RandomForestRegressor
+
+rf_model = RandomForestRegressor(n_estimators=30, max_depth=9, random_state=42, min_samples_leaf=2, min_samples_split=3)
+rf_model.fit(X_train, y_train)
+
+from sklearn.metrics import mean_squared_error,mean_absolute_error
+
+y_pred = rf_model.predict(X_valid)
+
+rfr_mae = mean_absolute_error(y_valid, y_pred)
+rfr_mse = mean_squared_error(y_valid, y_pred)
+print(rfr_mae, rfr_mse)
+
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+
+model = Sequential()
+model.add(Dense(64, activation='relu', input_shape=(X_train.shape[1],)))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dropout(rate=0.2))
+model.add(Dense(32, activation='relu'))
+model.add(Dropout(rate=0.2))
+model.add(Dense(1))
+
+model.compile(optimizer='adam', loss='mse')
+
+estopping = EarlyStopping(monitor='val_loss')
+mcheckpoint = ModelCheckpoint(monitor='val_loss', filepath='AI_best_model.h5', save_best_only=True)
+
+history = model.fit(X_train_scaled, y_train, epochs=100, validation_data = (X_valid_scaled, y_valid), callbacks=[estopping,mcheckpoint])
+
+plt.plot(history.history['loss'], 'y', label = 'mse')
+plt.plot(history.history['val_loss'], 'r', label = 'val_mse')
+plt.title("Model MSE")
+plt.xlabel('Epochs')
+plt.ylabel('MSE')
+plt.legend()
+plt.show()
+```
+
+

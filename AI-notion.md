@@ -100,6 +100,10 @@ sns.scatter(x, y)
 #막대 그래프 그리기
 sns.bar(x, y)
 
+# 종속변수 시각화
+sns.displot(cal['Calories_Burned'])
+plt.show()
+
 #히스토그램 그리기
 sns.hist(values)
 

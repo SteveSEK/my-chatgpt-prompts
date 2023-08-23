@@ -116,6 +116,11 @@ df.isna().sum()
 df['HOUSE'].fillna(df['HOUSE'].mean, inplace=True)
 #결측치 삭제하기
 df1 = df1.dropna()
+#예제제
+data = data.drop(['PassengerId', 'Name', 'Ticket', 'Cabin'], axis=1)
+data = data.dropna()
+data = data.reset_index(drop=True)
+data_clean = data.copy()
 
 #이상치 데이터 확인
 sns.boxplot(x='CHURN', y='LEFTOVER', data=df)

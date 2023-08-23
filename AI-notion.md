@@ -87,34 +87,41 @@ import seaborn as sns
 
 #차트 그리기
 plt.title('Accuracy')
-plt.plot(hist.history['acc'], label='acc')
-plt.plot(hist.history['val_acc'], label='val_acc')
+sns.plot(hist.history['acc'], label='acc')
+sns.plot(hist.history['val_acc'], label='val_acc')
 plt.legend()
 plt.xlabel('Epochs')
 plt.ylabel('Acc')
 plt.show()
 
 #산점도(Scatter plot)
-plt.scatter(x, y)
+sns.scatter(x, y)
 
 #막대 그래프 그리기
-plt.bar(x, y)
+sns.bar(x, y)
 
 #히스토그램 그리기
-plt.hist(values)
+sns.hist(values)
 
 #히트맵(Heatmap)
 sns.heatmap(df.corr(), cmap="Blues", annot=True)
 sns.heatmap(df.corr())
 
 #박스 플롯(Box plot)
-plt.boxplot(df['HANDSET_PRICE'])
+sns.boxplot(df['HANDSET_PRICE'])
 plt.show()
-
 sns.boxplot(y='AVERAGE_CALL_DURATION', x='CHURN', data=df)
 
 #pairplot
 sns.pairplot(data=df, x_vars=['컬럼', '컬럼', '컬럼'], y_vars=['컬럼', '컬럼', '컬럼'])
+
+# Pie plot
+plt.figure(figsize=(6, 6))
+data['Survived'].value_counts().plot.pie(autopct='%1.1f%%', shadow=True)
+plt.title('Survived')
+plt.ylabel('')
+plt.show()
+
 ```
 
 #### 4. 데이터 전처리 (결측치 처리, 라벨인코딩 등)
@@ -146,6 +153,10 @@ df['HOUSE'].fillna(df['HOUSE'].mean, inplace=True)
 df1 = df1.dropna()
 
 ## 이상치 처리 ##
+new_data1 = data1.copy()
+new_data1.drop(new_data1[data1['subscribers']>2*1e9].index, inplace=True)
+new_data1.drop(new_data1[data1['video views']>2*1e11].index, inplace=True)
+new_data1.info()
 
 #이상치 데이터 확인
 sns.boxplot(x='CHURN', y='LEFTOVER', data=df)

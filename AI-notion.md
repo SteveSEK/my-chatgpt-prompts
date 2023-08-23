@@ -85,8 +85,13 @@ sns.boxplot(y='AVERAGE_CALL_DURATION', x='CHURN', data=df)
 #pairplot
 sns.pairplot(data=df, x_vars=['컬럼', '컬럼', '컬럼'], y_vars=['컬럼', '컬럼', '컬럼'])
 # Pie plot
-data['Survived'].value_counts().plot.pie(autopct='%1.1f%%', shadow=True)
+plt.figure(figsize=(6, 6))
+labels = data['Survived'].value_counts().index
+sizes = data['Survived'].value_counts().values
+plt.pie(sizes, labels=labels, autopct='%1.1f%%', shadow=True)
+plt.title('Survived')
 plt.ylabel('')
+plt.show()
 
 #히트맵(Heatmap)
 sns.heatmap(df.corr(), cmap="Blues", annot=True)

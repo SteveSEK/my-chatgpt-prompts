@@ -158,7 +158,7 @@ df = pd.get_dummies(columns=cols, data=df, drop_first=True)
 #### 5. 데이터 분리 (x, y)
 ```
 X = tips.drop('total_bill',axis=1) ​
-y = tips['total_bill’]   # series ​
+y = tips['total_bill']   # series ​
 X_train,X_valid,y_train, y_valid = ​train_test_split(X,y, random_state=58,test_size=0.2)​
 ```
 

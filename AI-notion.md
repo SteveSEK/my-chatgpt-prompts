@@ -62,8 +62,10 @@ df.corr()
 #전체에서 모든 문자열 변환
 df_1 = df.copy()
 for i in df_1.columns:
-   df_1[i] = df_1[i].astype('str').str.replace(',', '')
-df_1.head()
+  if df_1[i].dtype == 'object' : 
+    df_1[i] = df_1[i].astype('str').str.replace(',', '')
+    df_1[i] = df_1[i].astype('str').str.replace('0 ‡‡', '0')
+    df_1[i] = df_1[i].astype('str').str.replace('', '0')
 ```
 ```
 ### 시각화 ###
@@ -97,7 +99,6 @@ plt.pie(sizes, labels=labels, autopct='%1.1f%%', shadow=True)
 plt.title('Survived')
 plt.ylabel('')
 plt.show()
-
 #히트맵(Heatmap)
 sns.heatmap(df.corr(), cmap="Blues", annot=True)
 ```

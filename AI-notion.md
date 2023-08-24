@@ -59,6 +59,11 @@ df.isna().sum()
 df.dtypes
 #두 변수간 상관 관계 분석
 df.corr()
+#전체에서 모든 문자열 변환
+df_1 = df.copy()
+for i in df_1.columns:
+   df_1[i] = df_1[i].astype('str').str.replace(',', '')
+df_1.head()
 ```
 ```
 ### 시각화 ###

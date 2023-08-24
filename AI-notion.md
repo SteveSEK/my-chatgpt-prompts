@@ -109,6 +109,9 @@ sns.heatmap(df.corr(), cmap="Blues", annot=True)
 df1 = df.drop(['id', 'COLLEGE', 'LEFTOVER'], axis=1)
 #값 변경 -> 인자(변경 전 값, 변경 후 값, inplace=True)
 df1['REPORTED_USAGE_LEVEL'].replace('avg', 'middle', inplace=True)
+#조건 삭
+outlier = players[(players['age']>35) | (players['shirt_nr']>50)].index
+new_players = players.drop(outlier)
 #특정 값이 있는 행만 가져오기
 df1[df1['OVERAGE'] == 10]
 #특정 값의 개수 확인

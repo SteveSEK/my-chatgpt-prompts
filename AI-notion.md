@@ -59,6 +59,12 @@ df.isna().sum()
 df.dtypes
 #두 변수간 상관 관계 분석
 df.corr()
+#필터 사용 후 그래프
+school.describe()
+filtered = school[(school['Weighted salary (US$)']>=5) & (school['Female faculty (%)']>=1)]
+plt.figure(figsize=(10,6)) 
+sns.scatterplot(x=filtered['Female faculty (%)'], y=filtered['Weighted salary (US$)'])
+plt.show()
 #전체에서 모든 문자열 변환
 df_1 = df.copy()
 for i in df_1.columns:
